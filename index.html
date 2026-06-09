@@ -1030,11 +1030,11 @@
     .toast.success { background: #16A862; }
     .toast.error { background: #C03030; }
     /* ============================================
-       CATÁLOGO
+       CATÁLOGO (grid + tabs + detail)
        ============================================ */
     .catalog-intro {
       display: flex; align-items: end; justify-content: space-between;
-      margin-bottom: 48px; gap: 24px; flex-wrap: wrap;
+      margin-bottom: 32px; gap: 24px; flex-wrap: wrap;
     }
     .catalog-intro h2 {
       font-size: clamp(30px, 4vw, 48px);
@@ -1047,146 +1047,262 @@
       max-width: 38ch;
       font-size: 15.5px;
     }
-    .catalog-intro .btn-add-cat {
-      display: none;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 16px;
-      background: var(--ink);
-      color: #fff;
+
+    /* TABS */
+    .catalog-tabs {
+      display: flex; align-items: center;
+      gap: 6px;
+      padding: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      margin-bottom: 24px;
+      max-width: max-content;
+      flex-wrap: wrap;
+    }
+    .tab {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 18px;
       border-radius: 100px;
       font-weight: 600;
-      font-size: 13.5px;
-    }
-    body.admin .catalog-intro .btn-add-cat { display: inline-flex; }
-    .catalog-intro .btn-add-cat:hover { background: var(--accent-deep); }
-    .catalog-intro .btn-add-cat svg { width: 16px; height: 16px; }
-
-    .catalog-list {
-      display: flex;
-      flex-direction: column;
-      gap: 24px;
-    }
-    .cat-block {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-    }
-    .cat-head {
-      display: flex; align-items: center; gap: 14px;
-      padding: 22px 26px 0;
+      font-size: 14px;
+      color: var(--muted);
+      transition: all 0.25s var(--ease);
       position: relative;
     }
-    .cat-head-content {
-      flex: 1; min-width: 0;
-      display: flex; align-items: center; gap: 14px;
+    .tab:hover { color: var(--ink); background: rgba(10,37,64,0.04); }
+    .tab.active {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: var(--shadow-sm);
     }
-    .cat-icon {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
-    }
-    .cat-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .cat-icon svg { width: 22px; height: 22px; }
-    .cat-title {
-      font-family: var(--font-display);
-      font-weight: 600;
-      font-size: 22px;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
-      color: var(--ink);
-    }
-    .cat-count {
-      font-family: var(--font-body);
-      font-size: 12px;
+    .tab-count {
+      font-size: 11px;
+      opacity: 0.6;
       font-weight: 500;
-      color: var(--muted);
-      text-transform: none;
-      letter-spacing: 0.04em;
-      display: block;
-      margin-top: 2px;
     }
-    .cat-actions {
+    .tab .tab-edit, .tab .tab-del {
       display: none;
-      gap: 6px;
-    }
-    body.admin .cat-actions { display: inline-flex; }
-    .btn-cat-action {
-      width: 34px; height: 34px;
+      width: 22px; height: 22px;
+      align-items: center; justify-content: center;
       border-radius: 50%;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--ink);
-      transition: all 0.2s var(--ease);
+      margin-left: 2px;
     }
-    .btn-cat-action:hover { background: var(--ink); color: #fff; }
-    .btn-cat-action.danger:hover { background: #C03030; }
-    .btn-cat-action svg { width: 14px; height: 14px; }
+    body.admin .tab.active .tab-edit,
+    body.admin .tab.active .tab-del { display: inline-flex; }
+    .tab .tab-edit { background: rgba(255,255,255,0.15); }
+    .tab .tab-del { background: rgba(255,80,80,0.25); }
+    .tab .tab-edit:hover { background: rgba(255,255,255,0.28); }
+    .tab .tab-del:hover { background: rgba(255,80,80,0.5); }
+    .tab .tab-edit svg, .tab .tab-del svg { width: 11px; height: 11px; color: #fff; }
 
-    .cat-divider {
-      height: 3px;
-      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-soft) 80px, transparent 200px);
-      margin: 14px 26px 0;
-      border-radius: 2px;
-    }
-
-    .models {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .model-row {
-      border-bottom: 1px solid var(--border);
-    }
-    .model-row:last-child { border-bottom: none; }
-    .model-head {
-      display: flex; align-items: center; gap: 12px;
-      padding: 18px 26px;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
+    .btn-add-cat {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
       background: transparent;
-      transition: background 0.2s;
+      color: var(--accent-deep);
+      border: 1px dashed var(--accent);
+      border-radius: 100px;
+      font-weight: 600;
+      font-size: 13px;
+      margin-left: 8px;
     }
-    .model-head:hover { background: var(--surface-2); }
-    .model-thumb {
-      width: 48px; height: 48px;
-      border-radius: 10px;
-      background: var(--surface-2);
-      overflow: hidden;
-      flex-shrink: 0;
+    body.admin .btn-add-cat { display: inline-flex; }
+    .btn-add-cat:hover { background: var(--accent-soft); }
+    .btn-add-cat svg { width: 14px; height: 14px; }
+
+    /* GRID */
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+    @media (min-width: 480px) {
+      .catalog-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    }
+
+    .model-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 14px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: center;
+      position: relative;
+      transition: all 0.28s var(--ease);
+      box-shadow: var(--shadow-sm);
+    }
+    .model-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(41,182,224,0.4);
+    }
+    .model-card.active {
+      border-color: var(--accent);
+      background: linear-gradient(180deg, rgba(41,182,224,0.06), var(--surface));
+      box-shadow: 0 0 0 3px rgba(41,182,224,0.15), var(--shadow-md);
+    }
+    .model-card-img {
+      width: 100%;
+      aspect-ratio: 4 / 5;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: var(--surface-2);
+      border-radius: 10px;
+      overflow: hidden;
       color: var(--muted);
-      border: 1px solid var(--border);
     }
-    .model-thumb img {
+    .model-card-img img {
       width: 100%; height: 100%;
       object-fit: cover;
     }
-    .model-thumb svg {
-      width: 22px; height: 22px;
-      opacity: 0.6;
+    .model-card-img svg {
+      width: 70%; height: 100%;
+      object-fit: contain;
     }
-    .model-name {
-      flex: 1; min-width: 0;
+    .model-card-img svg[viewBox="0 0 100 130"] {
+      width: 60%;
+    }
+    .model-card-name {
       font-weight: 600;
-      font-size: 16px;
+      font-size: 13.5px;
       color: var(--ink);
+      line-height: 1.25;
+    }
+    .model-card.active .model-card-name { color: var(--accent-deep); }
+    .model-card .model-badge {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px;
+      background: var(--gold);
+      color: var(--ink);
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 100px;
+    }
+    .model-card-actions {
+      display: none;
+      position: absolute;
+      top: 8px; right: 8px;
+      gap: 4px;
+    }
+    body.admin .model-card-actions { display: inline-flex; }
+    .btn-card-action {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(15,27,38,0.85);
+      color: #fff;
+      backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .btn-card-action:hover { background: var(--ink); transform: scale(1.08); }
+    .btn-card-action.danger:hover { background: #C03030; }
+    .btn-card-action svg { width: 12px; height: 12px; }
+
+    .add-model-card {
+      display: none;
+      background: transparent;
+      border: 2px dashed var(--border-strong);
+      border-radius: 16px;
+      padding: 18px 14px;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s var(--ease);
+      color: var(--muted);
+      min-height: 200px;
+      justify-content: center;
+    }
+    body.admin .add-model-card { display: flex; }
+    .add-model-card:hover {
+      border-color: var(--accent);
+      color: var(--accent-deep);
+      background: var(--accent-soft);
+    }
+    .add-model-card svg { width: 28px; height: 28px; }
+    .add-model-card span { font-size: 12.5px; font-weight: 600; }
+
+    /* DETAIL PANEL */
+    .model-detail {
+      background: linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 36px;
+      align-items: center;
+      scroll-margin-top: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+    .model-detail::before {
+      content: '';
+      position: absolute;
+      top: -120px; right: -100px;
+      width: 380px; height: 380px;
+      background: radial-gradient(circle, rgba(41,182,224,0.15) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    @media (max-width: 760px) {
+      .model-detail { grid-template-columns: 1fr; padding: 24px; gap: 24px; }
+    }
+    .detail-image {
+      position: relative; z-index: 1;
+      aspect-ratio: 4/5;
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      border: 1px solid var(--border);
+      max-width: 280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .detail-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+    }
+    .detail-image svg {
+      width: 65%; height: 95%;
+      object-fit: contain;
+    }
+    .detail-info { position: relative; z-index: 1; }
+    .detail-title {
+      font-family: var(--font-display);
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .detail-meta {
       display: flex; align-items: center; gap: 10px;
+      margin-bottom: 22px;
       flex-wrap: wrap;
     }
-    .model-badge {
+    .detail-cat-label {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .detail-badge {
       display: inline-flex; align-items: center;
-      padding: 3px 10px;
+      padding: 4px 11px;
       background: var(--gold);
       color: var(--ink);
       font-size: 10.5px;
@@ -1195,49 +1311,30 @@
       text-transform: uppercase;
       border-radius: 100px;
     }
-    .model-actions {
-      display: none;
-      gap: 6px;
-      margin-right: 6px;
-    }
-    body.admin .model-actions { display: inline-flex; }
-    .model-chevron {
-      flex-shrink: 0;
-      width: 28px; height: 28px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--muted);
-      transition: transform 0.3s var(--ease);
-    }
-    .model-row.expanded .model-chevron { transform: rotate(180deg); color: var(--accent-deep); }
-    .model-chevron svg { width: 18px; height: 18px; }
 
-    .model-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s var(--ease);
-    }
-    .model-row.expanded .model-body { max-height: 800px; }
-
-    .model-body-inner {
-      padding: 4px 26px 22px;
+    /* Reuse price-row styling — declare here */
+    .detail-prices {
       display: flex;
       flex-direction: column;
-      gap: 2px;
+      gap: 8px;
+      margin-bottom: 20px;
     }
-
     .price-row {
       display: flex; align-items: center; gap: 12px;
       padding: 14px 16px;
-      background: var(--surface-2);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
       transition: all 0.2s var(--ease);
     }
-    .price-row + .price-row { margin-top: 8px; }
-    .price-row:hover { background: var(--accent-soft); }
+    .price-row:hover {
+      border-color: var(--accent);
+      transform: translateX(2px);
+    }
     .price-icon {
-      width: 36px; height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
-      background: var(--surface);
+      background: var(--accent-soft);
       color: var(--accent-deep);
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
@@ -1252,7 +1349,7 @@
     .price-value {
       font-family: var(--font-display);
       font-weight: 600;
-      font-size: 20px;
+      font-size: 22px;
       color: var(--ink);
       letter-spacing: -0.01em;
       white-space: nowrap;
@@ -1261,65 +1358,50 @@
       font-size: 13px;
       color: var(--accent-deep);
       margin-right: 4px;
+      font-family: var(--font-body);
     }
-    .price-row .btn-mini-wa {
+    .btn-mini-wa {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px;
+      width: 38px; height: 38px;
       border-radius: 50%;
       background: var(--ink);
       color: #fff;
       transition: all 0.2s var(--ease);
       flex-shrink: 0;
     }
-    .price-row .btn-mini-wa:hover { background: #16A862; transform: scale(1.05); }
-    .price-row .btn-mini-wa svg { width: 16px; height: 16px; }
+    .btn-mini-wa:hover { background: #16A862; transform: scale(1.05); }
+    .btn-mini-wa svg { width: 16px; height: 16px; }
 
-    .model-cta {
-      margin-top: 14px;
-      display: flex;
-      justify-content: flex-end;
-    }
-    .btn-model-quote {
+    .btn-detail-quote {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 11px 20px;
+      padding: 13px 22px;
       background: var(--ink);
       color: #fff;
       border-radius: 100px;
       font-weight: 600;
-      font-size: 13.5px;
+      font-size: 14px;
       transition: all 0.25s var(--ease);
     }
-    .btn-model-quote:hover { background: var(--accent-deep); transform: translateY(-1px); }
-    .btn-model-quote svg { width: 16px; height: 16px; }
+    .btn-detail-quote:hover { background: var(--accent-deep); transform: translateY(-1px); }
+    .btn-detail-quote svg { width: 16px; height: 16px; }
 
-    .add-model-row {
-      display: none;
-      padding: 14px 26px;
-      border-top: 1px dashed var(--border-strong);
-      background: var(--surface-2);
+    .detail-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--muted);
+      grid-column: 1 / -1;
     }
-    body.admin .add-model-row { display: block; }
-    .btn-add-model {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 9px 14px;
-      background: transparent;
-      color: var(--accent-deep);
-      border: 1px dashed var(--accent);
-      border-radius: 100px;
-      font-weight: 600;
-      font-size: 13px;
-    }
-    .btn-add-model:hover { background: var(--accent-soft); }
-    .btn-add-model svg { width: 14px; height: 14px; }
 
-    .cat-empty {
-      padding: 32px 26px;
+    .catalog-empty-state {
+      padding: 56px 24px;
       text-align: center;
       color: var(--muted);
-      font-size: 14px;
+      background: var(--surface);
+      border: 1px dashed var(--border-strong);
+      border-radius: var(--radius-lg);
     }
 
-    /* Catalog modal price inputs */
+    /* Modals: prices grid */
     .prices-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
@@ -1571,14 +1653,14 @@
             <h2 style="margin-top:16px">Catálogo de <em>precios.</em></h2>
             <p>Encontrá el precio exacto para tu modelo. Si no aparece, escribinos por WhatsApp y te cotizamos al momento.</p>
           </div>
-          <button class="btn-add-cat" id="btnAddCategory">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-            Nueva categoría
-          </button>
         </div>
-        <div class="catalog-list" id="catalogList"></div>
+
+        <div class="catalog-tabs" id="catalogTabs"></div>
+        <div class="catalog-grid" id="catalogGrid"></div>
+        <div class="model-detail" id="modelDetail"></div>
       </div>
     </section>
+
 
     <!-- ====== CONTACT ====== -->
     <section class="section" id="contacto" style="padding-top:32px">
@@ -1955,10 +2037,16 @@
           } else {
             services = JSON.parse(JSON.stringify(DEFAULT_SERVICES));
           }
+          // Migración: limpiar Xiaomi de datos previos
+          let catalog = parsed.catalog || null;
+          if (catalog) {
+            catalog = catalog.filter(c => !c.id.toLowerCase().includes('xiaomi'));
+            if (catalog.length === 0) catalog = null;
+          }
           return {
             services,
             reviews: parsed.reviews || [],
-            catalog: parsed.catalog || null,
+            catalog,
           };
         }
       } catch (e) {}
@@ -2291,43 +2379,64 @@
         id: 'cat_iphone', name: 'iPhone', image: null,
         models: [
           { id: 'm_iphone16pm', name: 'iPhone 16 Pro Max', badge: 'Nuevo', image: null, prices: { pantalla: 3200, liberacion: 350, bateria: 950 } },
-          { id: 'm_iphone16p',  name: 'iPhone 16 Pro',      badge: 'Nuevo', image: null, prices: { pantalla: 2800, liberacion: 350, bateria: 950 } },
-          { id: 'm_iphone16',   name: 'iPhone 16',          badge: 'Nuevo', image: null, prices: { pantalla: 1900, liberacion: 350, bateria: 850 } },
-          { id: 'm_iphone15pm', name: 'iPhone 15 Pro Max',  badge: '',      image: null, prices: { pantalla: 2900, liberacion: 350, bateria: 900 } },
-          { id: 'm_iphone15',   name: 'iPhone 15',          badge: '',      image: null, prices: { pantalla: 1700, liberacion: 350, bateria: 850 } },
-          { id: 'm_iphone14',   name: 'iPhone 14',          badge: '',      image: null, prices: { pantalla: 1500, liberacion: 350, bateria: 800 } },
-          { id: 'm_iphone13',   name: 'iPhone 13',          badge: '',      image: null, prices: { pantalla: 1200, liberacion: 350, bateria: 750 } },
-          { id: 'm_iphone12',   name: 'iPhone 12',          badge: '',      image: null, prices: { pantalla: 1000, liberacion: 350, bateria: 700 } },
-          { id: 'm_iphone11',   name: 'iPhone 11',          badge: '',      image: null, prices: { pantalla:  850, liberacion: 350, bateria: 650 } },
+          { id: 'm_iphone16p',  name: 'iPhone 16 Pro',     badge: 'Nuevo', image: null, prices: { pantalla: 2800, liberacion: 350, bateria: 950 } },
+          { id: 'm_iphone16pl', name: 'iPhone 16 Plus',    badge: 'Nuevo', image: null, prices: { pantalla: 2200, liberacion: 350, bateria: 900 } },
+          { id: 'm_iphone16',   name: 'iPhone 16',         badge: 'Nuevo', image: null, prices: { pantalla: 1900, liberacion: 350, bateria: 850 } },
+          { id: 'm_iphone15pm', name: 'iPhone 15 Pro Max', badge: '',      image: null, prices: { pantalla: 2900, liberacion: 350, bateria: 900 } },
+          { id: 'm_iphone15p',  name: 'iPhone 15 Pro',     badge: '',      image: null, prices: { pantalla: 2400, liberacion: 350, bateria: 900 } },
+          { id: 'm_iphone15pl', name: 'iPhone 15 Plus',    badge: '',      image: null, prices: { pantalla: 1900, liberacion: 350, bateria: 850 } },
+          { id: 'm_iphone15',   name: 'iPhone 15',         badge: '',      image: null, prices: { pantalla: 1700, liberacion: 350, bateria: 850 } },
+          { id: 'm_iphone14pm', name: 'iPhone 14 Pro Max', badge: '',      image: null, prices: { pantalla: 2500, liberacion: 350, bateria: 850 } },
+          { id: 'm_iphone14p',  name: 'iPhone 14 Pro',     badge: '',      image: null, prices: { pantalla: 2100, liberacion: 350, bateria: 850 } },
+          { id: 'm_iphone14',   name: 'iPhone 14',         badge: '',      image: null, prices: { pantalla: 1500, liberacion: 350, bateria: 800 } },
+          { id: 'm_iphone13pm', name: 'iPhone 13 Pro Max', badge: '',      image: null, prices: { pantalla: 1900, liberacion: 350, bateria: 800 } },
+          { id: 'm_iphone13p',  name: 'iPhone 13 Pro',     badge: '',      image: null, prices: { pantalla: 1600, liberacion: 350, bateria: 800 } },
+          { id: 'm_iphone13',   name: 'iPhone 13',         badge: '',      image: null, prices: { pantalla: 1200, liberacion: 350, bateria: 750 } },
+          { id: 'm_iphone12pm', name: 'iPhone 12 Pro Max', badge: '',      image: null, prices: { pantalla: 1400, liberacion: 350, bateria: 750 } },
+          { id: 'm_iphone12p',  name: 'iPhone 12 Pro',     badge: '',      image: null, prices: { pantalla: 1100, liberacion: 350, bateria: 700 } },
+          { id: 'm_iphone12',   name: 'iPhone 12',         badge: '',      image: null, prices: { pantalla: 1000, liberacion: 350, bateria: 700 } },
+          { id: 'm_iphone11pm', name: 'iPhone 11 Pro Max', badge: '',      image: null, prices: { pantalla: 1100, liberacion: 350, bateria: 700 } },
+          { id: 'm_iphone11p',  name: 'iPhone 11 Pro',     badge: '',      image: null, prices: { pantalla:  950, liberacion: 350, bateria: 650 } },
+          { id: 'm_iphone11',   name: 'iPhone 11',         badge: '',      image: null, prices: { pantalla:  850, liberacion: 350, bateria: 650 } },
+          { id: 'm_iphonexr',   name: 'iPhone XR',         badge: '',      image: null, prices: { pantalla:  750, liberacion: 350, bateria: 600 } },
+          { id: 'm_iphonexs',   name: 'iPhone XS',         badge: '',      image: null, prices: { pantalla:  800, liberacion: 350, bateria: 600 } },
+          { id: 'm_iphonex',    name: 'iPhone X',          badge: '',      image: null, prices: { pantalla:  750, liberacion: 350, bateria: 550 } },
+          { id: 'm_iphonese3',  name: 'iPhone SE (2022)',  badge: '',      image: null, prices: { pantalla:  650, liberacion: 350, bateria: 500 } },
         ]
       },
       {
         id: 'cat_samsung', name: 'Samsung', image: null,
         models: [
           { id: 'm_s24u',  name: 'Galaxy S24 Ultra', badge: 'Premium', image: null, prices: { pantalla: 2500, liberacion: 300, bateria: 750 } },
+          { id: 'm_s24p',  name: 'Galaxy S24+',      badge: '', image: null, prices: { pantalla: 2100, liberacion: 300, bateria: 700 } },
           { id: 'm_s24',   name: 'Galaxy S24',       badge: '', image: null, prices: { pantalla: 1800, liberacion: 300, bateria: 700 } },
+          { id: 'm_s23u',  name: 'Galaxy S23 Ultra', badge: '', image: null, prices: { pantalla: 2200, liberacion: 300, bateria: 700 } },
+          { id: 'm_s23p',  name: 'Galaxy S23+',      badge: '', image: null, prices: { pantalla: 1700, liberacion: 300, bateria: 650 } },
           { id: 'm_s23',   name: 'Galaxy S23',       badge: '', image: null, prices: { pantalla: 1500, liberacion: 300, bateria: 650 } },
+          { id: 'm_s22u',  name: 'Galaxy S22 Ultra', badge: '', image: null, prices: { pantalla: 1800, liberacion: 300, bateria: 650 } },
+          { id: 'm_s22',   name: 'Galaxy S22',       badge: '', image: null, prices: { pantalla: 1300, liberacion: 300, bateria: 600 } },
+          { id: 'm_s21u',  name: 'Galaxy S21 Ultra', badge: '', image: null, prices: { pantalla: 1500, liberacion: 300, bateria: 600 } },
+          { id: 'm_s21',   name: 'Galaxy S21',       badge: '', image: null, prices: { pantalla: 1100, liberacion: 300, bateria: 550 } },
+          { id: 'm_zflip5',name: 'Galaxy Z Flip5',   badge: 'Premium', image: null, prices: { pantalla: 2800, liberacion: 300, bateria: 750 } },
+          { id: 'm_zfold5',name: 'Galaxy Z Fold5',   badge: 'Premium', image: null, prices: { pantalla: 3500, liberacion: 300, bateria: 800 } },
+          { id: 'm_note20u',name: 'Galaxy Note 20 Ultra', badge: '', image: null, prices: { pantalla: 1600, liberacion: 300, bateria: 650 } },
           { id: 'm_a55',   name: 'Galaxy A55',       badge: '', image: null, prices: { pantalla:  900, liberacion: 300, bateria: 500 } },
+          { id: 'm_a54',   name: 'Galaxy A54',       badge: '', image: null, prices: { pantalla:  800, liberacion: 300, bateria: 500 } },
           { id: 'm_a35',   name: 'Galaxy A35',       badge: '', image: null, prices: { pantalla:  700, liberacion: 300, bateria: 450 } },
+          { id: 'm_a34',   name: 'Galaxy A34',       badge: '', image: null, prices: { pantalla:  650, liberacion: 300, bateria: 450 } },
+          { id: 'm_a25',   name: 'Galaxy A25',       badge: '', image: null, prices: { pantalla:  550, liberacion: 300, bateria: 400 } },
           { id: 'm_a15',   name: 'Galaxy A15',       badge: '', image: null, prices: { pantalla:  500, liberacion: 300, bateria: 400 } },
-        ]
-      },
-      {
-        id: 'cat_xiaomi', name: 'Xiaomi', image: null,
-        models: [
-          { id: 'm_xi14',     name: 'Xiaomi 14',         badge: '', image: null, prices: { pantalla: 1400, liberacion: 300, bateria: 600 } },
-          { id: 'm_redmin13', name: 'Redmi Note 13 Pro', badge: '', image: null, prices: { pantalla:  650, liberacion: 300, bateria: 450 } },
-          { id: 'm_redmin12', name: 'Redmi Note 12',     badge: '', image: null, prices: { pantalla:  550, liberacion: 300, bateria: 400 } },
-          { id: 'm_redmia3',  name: 'Redmi A3',          badge: '', image: null, prices: { pantalla:  400, liberacion: 300, bateria: 350 } },
+          { id: 'm_a14',   name: 'Galaxy A14',       badge: '', image: null, prices: { pantalla:  450, liberacion: 300, bateria: 400 } },
         ]
       },
     ];
-
     // ============================================
     // CATÁLOGO state extension
     // ============================================
     if (!state.catalog) state.catalog = JSON.parse(JSON.stringify(DEFAULT_CATALOG));
 
+    let activeCatId = state.catalog[0]?.id || null;
+    let activeModelId = state.catalog[0]?.models[0]?.id || null;
     let editingCatId = null;
     let editingModelCatId = null;
     let editingModelId = null;
@@ -2343,147 +2452,218 @@
     }
 
     // ============================================
-    // CATÁLOGO render
+    // CATÁLOGO render (grid + tabs + detail)
     // ============================================
+    const SVG_PHONE = {
+      iphone_di:      `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="ipd-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e3050"/><stop offset="100%" stop-color="#0a1929"/></linearGradient></defs><rect x="16" y="8" width="68" height="116" rx="14" fill="#000" opacity="0.12"/><rect x="15" y="6" width="70" height="118" rx="14" fill="#2a2a2c"/><rect x="15.5" y="6.5" width="69" height="117" rx="13.5" fill="none" stroke="#444" stroke-width="0.6"/><rect x="18" y="9" width="64" height="112" rx="11" fill="url(#ipd-s)"/><rect x="41" y="13" width="18" height="6" rx="3" fill="#000"/><circle cx="55" cy="16" r="1.2" fill="#1a3a5a"/></svg>`,
+      iphone_notch:   `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="ipn-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1e3050"/><stop offset="100%" stop-color="#0a1929"/></linearGradient></defs><rect x="16" y="8" width="68" height="116" rx="14" fill="#000" opacity="0.12"/><rect x="15" y="6" width="70" height="118" rx="14" fill="#2a2a2c"/><rect x="15.5" y="6.5" width="69" height="117" rx="13.5" fill="none" stroke="#444" stroke-width="0.6"/><rect x="18" y="9" width="64" height="112" rx="11" fill="url(#ipn-s)"/><path d="M 37 9 L 37 16 Q 37 19, 40 19 L 60 19 Q 63 19, 63 16 L 63 9 Z" fill="#000"/><circle cx="58" cy="14" r="1.3" fill="#1a3a5a"/></svg>`,
+      iphone_se:      `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><rect x="16" y="8" width="68" height="116" rx="9" fill="#000" opacity="0.12"/><rect x="15" y="6" width="70" height="118" rx="10" fill="#f5f5f7"/><rect x="15.5" y="6.5" width="69" height="117" rx="9.5" fill="none" stroke="#c0c0c5" stroke-width="0.6"/><rect x="19" y="22" width="62" height="86" rx="2" fill="#0a1929"/><rect x="42" y="13" width="16" height="2" rx="1" fill="#d5d5da"/><circle cx="48" cy="13" r="0.8" fill="#a5a5aa"/><circle cx="50" cy="116" r="5" fill="none" stroke="#c0c0c5" stroke-width="0.8"/><circle cx="50" cy="116" r="3.2" fill="none" stroke="#c0c0c5" stroke-width="0.4"/></svg>`,
+      galaxy_s:       `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="gs-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a2942"/><stop offset="100%" stop-color="#0a1929"/></linearGradient><linearGradient id="gs-b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#2a2a2e"/><stop offset="100%" stop-color="#1a1a1e"/></linearGradient></defs><rect x="15" y="8" width="70" height="116" rx="9" fill="#000" opacity="0.12"/><rect x="14" y="6" width="72" height="118" rx="9" fill="url(#gs-b)"/><rect x="14.5" y="6.5" width="71" height="117" rx="8.5" fill="none" stroke="#444" stroke-width="0.6"/><rect x="17" y="9" width="66" height="112" rx="6" fill="url(#gs-s)"/><circle cx="50" cy="14" r="2.2" fill="#000"/><circle cx="50" cy="14" r="1" fill="#1a3a5a"/></svg>`,
+      galaxy_a:       `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="ga-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a3242"/><stop offset="100%" stop-color="#0a2030"/></linearGradient><linearGradient id="ga-b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3a4a6e"/><stop offset="100%" stop-color="#2a3a5e"/></linearGradient></defs><rect x="15" y="8" width="70" height="116" rx="9" fill="#000" opacity="0.12"/><rect x="14" y="6" width="72" height="118" rx="9" fill="url(#ga-b)"/><rect x="14.5" y="6.5" width="71" height="117" rx="8.5" fill="none" stroke="#5a6a8e" stroke-width="0.6"/><rect x="17" y="9" width="66" height="112" rx="6" fill="url(#ga-s)"/><circle cx="50" cy="14" r="2.2" fill="#000"/><circle cx="50" cy="14" r="1" fill="#1a4a6a"/></svg>`,
+      galaxy_z_flip:  `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="gzf-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#2a1e42"/><stop offset="100%" stop-color="#180a29"/></linearGradient><linearGradient id="gzf-b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#4a3c5e"/><stop offset="100%" stop-color="#3a2c4e"/></linearGradient></defs><rect x="20" y="8" width="60" height="116" rx="7" fill="#000" opacity="0.12"/><rect x="19" y="6" width="62" height="118" rx="8" fill="url(#gzf-b)"/><rect x="19.5" y="6.5" width="61" height="117" rx="7.5" fill="none" stroke="#6a5c8e" stroke-width="0.6"/><rect x="22" y="9" width="56" height="55" rx="3" fill="url(#gzf-s)"/><rect x="22" y="66" width="56" height="55" rx="3" fill="url(#gzf-s)"/><line x1="22" y1="65" x2="78" y2="65" stroke="#1a1525" stroke-width="1.5"/><line x1="24" y1="65" x2="76" y2="65" stroke="#6a5c8e" stroke-width="0.4"/><rect x="34" y="14" width="14" height="7" rx="1.5" fill="#0a0a1a"/><circle cx="37" cy="17.5" r="1.3" fill="#3a3a4e"/><circle cx="42" cy="17.5" r="1.3" fill="#3a3a4e"/></svg>`,
+      galaxy_z_fold:  `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="gzfd-s" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#1a2e42"/><stop offset="100%" stop-color="#0a1825"/></linearGradient><linearGradient id="gzfd-b" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#3a4a6e"/><stop offset="100%" stop-color="#2a3a5e"/></linearGradient></defs><rect x="6" y="14" width="88" height="104" rx="6" fill="#000" opacity="0.12"/><rect x="5" y="12" width="90" height="106" rx="7" fill="url(#gzfd-b)"/><rect x="5.5" y="12.5" width="89" height="105" rx="6.5" fill="none" stroke="#5a6a8e" stroke-width="0.6"/><rect x="8" y="15" width="40" height="100" rx="3" fill="url(#gzfd-s)"/><rect x="52" y="15" width="40" height="100" rx="3" fill="url(#gzfd-s)"/><line x1="50" y1="15" x2="50" y2="115" stroke="#1a2030" stroke-width="1.5"/><line x1="50" y1="17" x2="50" y2="113" stroke="#5a6a8e" stroke-width="0.4"/><circle cx="28" cy="20" r="1.5" fill="#000"/><circle cx="72" cy="20" r="1.5" fill="#000"/></svg>`,
+      generic:        `<svg viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><rect x="15" y="6" width="70" height="118" rx="14" fill="none" stroke="currentColor" stroke-width="2.5"/><rect x="20" y="18" width="60" height="94" rx="4" fill="currentColor" opacity="0.08"/><circle cx="50" cy="13" r="1.8" fill="currentColor"/></svg>`,
+    };
+
+    function phonePlaceholderSVG(modelName) {
+      const name = (modelName || '').toLowerCase();
+      // iPhone family detection
+      if (name.includes('iphone')) {
+        if (name.includes('se')) return SVG_PHONE.iphone_se;
+        // Dynamic Island: iPhone 14 Pro, 14 Pro Max, and ALL 15/16/17+ models
+        const num = (name.match(/iphone\s*(\d+)/) || [])[1];
+        const n = parseInt(num, 10);
+        if (n >= 15) return SVG_PHONE.iphone_di;
+        if (n === 14 && name.includes('pro')) return SVG_PHONE.iphone_di;
+        return SVG_PHONE.iphone_notch;
+      }
+      // Samsung family detection
+      if (name.includes('galaxy') || name.includes('samsung') || name.includes('note')) {
+        if (name.includes('z flip')) return SVG_PHONE.galaxy_z_flip;
+        if (name.includes('z fold')) return SVG_PHONE.galaxy_z_fold;
+        if (name.match(/galaxy\s*a\d/)) return SVG_PHONE.galaxy_a;
+        return SVG_PHONE.galaxy_s;
+      }
+      // Generic fallback
+      return SVG_PHONE.generic;
+    }
+
     function renderCatalog() {
-      const list = document.getElementById('catalogList');
-      if (!list) return;
+      const tabsEl = document.getElementById('catalogTabs');
+      const gridEl = document.getElementById('catalogGrid');
+      const detailEl = document.getElementById('modelDetail');
+      if (!tabsEl || !gridEl || !detailEl) return;
+
       if (!state.catalog || state.catalog.length === 0) {
-        list.innerHTML = '<div class="empty">Aún no hay categorías. Entrá al admin para agregar.</div>';
+        tabsEl.innerHTML = '';
+        gridEl.innerHTML = '<div class="catalog-empty-state">Aún no hay categorías. Entrá al admin para crear iPhone, Samsung, o la marca que necesites.</div>';
+        detailEl.style.display = 'none';
+        // Show add button anyway (for admin)
+        if (document.body.classList.contains('admin')) {
+          tabsEl.innerHTML = '<button class="btn-add-cat" id="btnAddCategory"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>Nueva categoría</button>';
+              }
         return;
       }
-      list.innerHTML = state.catalog.map(cat => renderCategory(cat)).join('');
+
+      // Ensure activeCatId is valid
+      if (!state.catalog.find(c => c.id === activeCatId)) {
+        activeCatId = state.catalog[0].id;
+      }
+
+      // Render tabs
+      tabsEl.innerHTML = state.catalog.map(cat => {
+        const isActive = cat.id === activeCatId;
+        return `
+          <button class="tab ${isActive ? 'active' : ''}" data-tab="${cat.id}">
+            <span>${escapeHtml(cat.name)}</span>
+            <span class="tab-count">${cat.models.length}</span>
+            <span class="tab-edit" data-edit-cat-tab="${cat.id}" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>
+            <span class="tab-del" data-del-cat-tab="${cat.id}" title="Borrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></span>
+          </button>`;
+      }).join('') + `
+        <button class="btn-add-cat" id="btnAddCategory">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          Nueva categoría
+        </button>`;
+
+      // Render grid for active category
+      const cat = state.catalog.find(c => c.id === activeCatId);
+      const cards = cat.models.map(m => renderModelCard(cat.id, m)).join('');
+      const addCard = `
+        <button class="add-model-card" data-add-model="${cat.id}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Agregar modelo a ${escapeHtml(cat.name)}</span>
+        </button>`;
+      gridEl.innerHTML = cards + addCard;
+
+      // Ensure activeModelId is valid (belongs to active category)
+      if (activeModelId) {
+        const found = cat.models.find(m => m.id === activeModelId);
+        if (!found) activeModelId = cat.models[0]?.id || null;
+      } else {
+        activeModelId = cat.models[0]?.id || null;
+      }
+
+      renderDetail();
       bindCatalogEvents();
     }
 
-    function renderCategory(cat) {
-      const modelsHtml = cat.models && cat.models.length
-        ? `<ul class="models">${cat.models.map(m => renderModel(cat.id, m)).join('')}</ul>`
-        : `<div class="cat-empty">Esta categoría aún no tiene modelos.</div>`;
-      const catIcon = cat.image
-        ? `<div class="cat-icon"><img src="${cat.image}" alt="${escapeHtml(cat.name)}"/></div>`
-        : `<div class="cat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/></svg></div>`;
+    function renderModelCard(catId, m) {
+      const isActive = m.id === activeModelId;
+      const img = m.image
+        ? `<img src="${m.image}" alt="${escapeHtml(m.name)}" loading="lazy"/>`
+        : phonePlaceholderSVG(m.name);
+      const badge = m.badge && m.badge.trim()
+        ? `<span class="model-badge">${escapeHtml(m.badge)}</span>` : '';
       return `
-        <section class="cat-block" data-cat-id="${cat.id}">
-          <div class="cat-head">
-            <div class="cat-head-content">
-              ${catIcon}
-              <div>
-                <div class="cat-title">${escapeHtml(cat.name)}</div>
-                <span class="cat-count">${cat.models.length} ${cat.models.length === 1 ? 'modelo' : 'modelos'}</span>
-              </div>
-            </div>
-            <div class="cat-actions">
-              <button class="btn-cat-action" data-edit-cat="${cat.id}" title="Editar categoría">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-              </button>
-              <button class="btn-cat-action danger" data-del-cat="${cat.id}" title="Borrar categoría">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              </button>
-            </div>
-          </div>
-          <div class="cat-divider"></div>
-          ${modelsHtml}
-          <div class="add-model-row">
-            <button class="btn-add-model" data-add-model="${cat.id}">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-              Agregar modelo a ${escapeHtml(cat.name)}
-            </button>
-          </div>
-        </section>
-      `;
+        <div class="model-card ${isActive ? 'active' : ''}" data-model="${catId}|${m.id}" role="button" tabindex="0" aria-pressed="${isActive}">
+          <div class="model-card-img">${img}</div>
+          <span class="model-card-name">${escapeHtml(m.name)}</span>
+          ${badge}
+          <span class="model-card-actions">
+            <button class="btn-card-action" data-edit-model="${catId}|${m.id}" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="btn-card-action danger" data-del-model="${catId}|${m.id}" title="Borrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+          </span>
+        </div>`;
     }
 
-    function renderModel(catId, m) {
+    function renderDetail() {
+      const detailEl = document.getElementById('modelDetail');
+      const cat = state.catalog.find(c => c.id === activeCatId);
+      if (!cat || !activeModelId) {
+        detailEl.style.display = 'flex';
+        detailEl.innerHTML = '<div class="detail-empty">Seleccioná un modelo arriba para ver los precios.</div>';
+        return;
+      }
+      const m = cat.models.find(x => x.id === activeModelId);
+      if (!m) {
+        detailEl.style.display = 'flex';
+        detailEl.innerHTML = '<div class="detail-empty">Seleccioná un modelo arriba para ver los precios.</div>';
+        return;
+      }
+      detailEl.style.display = '';
+
       const p = m.prices || {};
       const waMsg = (svc, price) =>
         encodeURIComponent(`Hola Connection 👋, quisiera cotizar ${svc} para mi ${m.name}. Vi en su catálogo Q ${fmtPrice(price)}. ¿Está disponible?`);
       const generalMsg = encodeURIComponent(`Hola Connection 👋, me interesa cotizar servicios para mi ${m.name}. ¿Me pueden ayudar?`);
 
+      const img = m.image
+        ? `<img src="${m.image}" alt="${escapeHtml(m.name)}"/>`
+        : phonePlaceholderSVG(m.name);
       const badge = m.badge && m.badge.trim()
-        ? `<span class="model-badge">${escapeHtml(m.badge)}</span>` : '';
+        ? `<span class="detail-badge">${escapeHtml(m.badge)}</span>` : '';
 
-      const thumb = m.image
-        ? `<div class="model-thumb"><img src="${m.image}" alt="${escapeHtml(m.name)}"/></div>`
-        : `<div class="model-thumb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/></svg></div>`;
-
-      return `
-        <li class="model-row" data-model-id="${m.id}" data-cat-id="${catId}">
-          <div class="model-head" data-toggle="${m.id}" role="button" tabindex="0" aria-expanded="false">
-            ${thumb}
-            <span class="model-name">${escapeHtml(m.name)}${badge}</span>
-            <span class="model-actions">
-              <button class="btn-cat-action" data-edit-model="${catId}|${m.id}" title="Editar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 1 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
-              <button class="btn-cat-action danger" data-del-model="${catId}|${m.id}" title="Borrar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
-            </span>
-            <span class="model-chevron"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg></span>
+      detailEl.innerHTML = `
+        <div class="detail-image">${img}</div>
+        <div class="detail-info">
+          <div class="detail-meta">
+            <span class="detail-cat-label">${escapeHtml(cat.name)}</span>
+            ${badge}
           </div>
-          <div class="model-body">
-            <div class="model-body-inner">
-              <div class="price-row">
-                <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/></svg></div>
-                <div class="price-label">Cambio de pantalla</div>
-                <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.pantalla)}</div>
-                <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('cambio de pantalla', p.pantalla)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg>
-                </a>
-              </div>
-              <div class="price-row">
-                <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0"/></svg></div>
-                <div class="price-label">Liberación</div>
-                <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.liberacion)}</div>
-                <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('liberación', p.liberacion)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg>
-                </a>
-              </div>
-              <div class="price-row">
-                <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="18" height="10" rx="2"/><rect x="20" y="10" width="2" height="4" fill="currentColor"/></svg></div>
-                <div class="price-label">Cambio de batería</div>
-                <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.bateria)}</div>
-                <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('cambio de batería', p.bateria)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg>
-                </a>
-              </div>
-              <div class="model-cta">
-                <a class="btn-model-quote" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${generalMsg}" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg>
-                  Cotizar por WhatsApp
-                </a>
-              </div>
+          <div class="detail-title">${escapeHtml(m.name)}</div>
+          <div class="detail-prices">
+            <div class="price-row">
+              <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="10" y1="18" x2="14" y2="18" stroke-linecap="round"/></svg></div>
+              <div class="price-label">Cambio de pantalla</div>
+              <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.pantalla)}</div>
+              <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('cambio de pantalla', p.pantalla)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg></a>
+            </div>
+            <div class="price-row">
+              <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0"/></svg></div>
+              <div class="price-label">Liberación</div>
+              <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.liberacion)}</div>
+              <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('liberación', p.liberacion)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg></a>
+            </div>
+            <div class="price-row">
+              <div class="price-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="7" width="18" height="10" rx="2"/><rect x="20" y="10" width="2" height="4" fill="currentColor"/></svg></div>
+              <div class="price-label">Cambio de batería</div>
+              <div class="price-value"><span class="currency">Q</span>${fmtPrice(p.bateria)}</div>
+              <a class="btn-mini-wa" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${waMsg('cambio de batería', p.bateria)}" target="_blank" rel="noopener" title="Cotizar por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg></a>
             </div>
           </div>
-        </li>
-      `;
+          <a class="btn-detail-quote" href="https://wa.me/${CONFIG.WHATSAPP_1}?text=${generalMsg}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 3.5A11.5 11.5 0 0 0 3.6 18.7L2 22l3.4-1.5a11.5 11.5 0 0 0 15.1-16.9z"/></svg>
+            Cotizar por WhatsApp
+          </a>
+        </div>`;
     }
 
     function bindCatalogEvents() {
-      // Toggle model expansion (mouse + keyboard)
-      document.querySelectorAll('#catalogList .model-head').forEach(b => {
-        const toggle = (e) => {
+      // Tab click → switch active category
+      document.querySelectorAll('#catalogTabs .tab').forEach(t => {
+        t.onclick = (e) => {
+          if (e.target.closest('[data-edit-cat-tab],[data-del-cat-tab]')) return;
+          activeCatId = t.dataset.tab;
+          activeModelId = null; // reset; renderCatalog will pick first
+          renderCatalog();
+        };
+      });
+      // Tab edit/delete (admin)
+      document.querySelectorAll('[data-edit-cat-tab]').forEach(b => {
+        b.onclick = e => { e.stopPropagation(); openCatModal(b.dataset.editCatTab); };
+      });
+      document.querySelectorAll('[data-del-cat-tab]').forEach(b => {
+        b.onclick = e => { e.stopPropagation(); deleteCategory(b.dataset.delCatTab); };
+      });
+      // Card click → select model + scroll to detail
+      document.querySelectorAll('#catalogGrid .model-card').forEach(c => {
+        const handler = (e) => {
           if (e.target.closest('[data-edit-model],[data-del-model]')) return;
-          const row = b.closest('.model-row');
-          row.classList.toggle('expanded');
-          b.setAttribute('aria-expanded', row.classList.contains('expanded'));
+          const [catId, modelId] = c.dataset.model.split('|');
+          activeCatId = catId;
+          activeModelId = modelId;
+          renderCatalog();
+          setTimeout(() => {
+            document.getElementById('modelDetail').scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 50);
         };
-        b.onclick = toggle;
-        b.onkeydown = (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            toggle(e);
-          }
+        c.onclick = handler;
+        c.onkeydown = (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(e); }
         };
       });
-      // Edit/delete category
-      document.querySelectorAll('[data-edit-cat]').forEach(b => {
-        b.onclick = e => { e.stopPropagation(); openCatModal(b.dataset.editCat); };
-      });
-      document.querySelectorAll('[data-del-cat]').forEach(b => {
-        b.onclick = e => { e.stopPropagation(); deleteCategory(b.dataset.delCat); };
-      });
-      // Add/edit/delete model
-      document.querySelectorAll('[data-add-model]').forEach(b => {
-        b.onclick = () => openModelModal(b.dataset.addModel, null);
-      });
+      // Card edit/delete (admin)
       document.querySelectorAll('[data-edit-model]').forEach(b => {
         b.onclick = e => {
           e.stopPropagation();
@@ -2498,6 +2678,13 @@
           deleteModel(cId, mId);
         };
       });
+      // Add model card
+      document.querySelectorAll('[data-add-model]').forEach(b => {
+        b.onclick = () => openModelModal(b.dataset.addModel, null);
+      });
+      // Add category button
+      const addCatBtn = document.getElementById('btnAddCategory');
+      if (addCatBtn) addCatBtn.onclick = () => openCatModal(null);
     }
 
     // ============================================
@@ -2663,7 +2850,8 @@
     // ============================================
     // CATÁLOGO buttons
     // ============================================
-    document.getElementById('btnAddCategory').addEventListener('click', () => openCatModal(null));
+    // btnAddCategory se vincula dinámicamente dentro de bindCatalogEvents
+    // porque se crea cada vez que renderCatalog() corre
     document.getElementById('saveCat').addEventListener('click', saveCat);
     document.getElementById('saveModel').addEventListener('click', saveModel);
 
